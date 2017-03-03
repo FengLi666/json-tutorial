@@ -43,14 +43,17 @@ int lept_parse(lept_value* v, const char* json) {
     c.json = json;
     v->type = LEPT_NULL;
     lept_parse_whitespace(&c);
-    int result = lept_parse_value(&c, v);
-    lept_parse_whitespace(&c);
-    if (result == LEPT_PARSE_OK && *c.json != '\0')
+    size_t result = lept_parse_value(&c, v);
+
+    if (result == LEPT_PARSE_OK )
     {
-            return LEPT_PARSE_ROOT_NOT_SINGULAR;
+        lept_parse_whitespace(&c);
+        if (*c.json != '\0')
+//            result = LEPT_PARSE_ROOT_NOT_SINGULAR;
+        result =  LEPT_PARSE_ROOT_NOT_SINGULAR;
     }
-    else
-        return result;
+
+    return result;
 }
 
 lept_type lept_get_type(const lept_value* v) {
